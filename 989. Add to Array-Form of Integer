@@ -1,0 +1,68 @@
+
+https://leetcode.com/problems/add-to-array-form-of-integer/
+
+## code_mine
+
+```
+Runtime: 192 ms, faster than 7.54% of C++ online submissions for Add to Array-Form of Integer.
+Memory Usage: 438.8 MB, less than 5.06% of C++ online submissions for Add to Array-Form of Integer.
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& A, int K) {
+        string Kstr = std::to_string(K);
+        int len1 = A.size();
+        int len2 = Kstr.length();
+        int carry = 0;
+
+        string res_str = "";
+        for (int i = len1 - 1, j = len2 - 1; i >= 0 || j >= 0 || carry == 1; --i, --j) {
+            int x = i < 0 ? 0 : A[i];
+            int y = j < 0 ? 0 : Kstr[j]-'0';
+
+            res_str = char((x + y + carry) % 10 + '0') + res_str;
+            carry = (x + y + carry) / 10;
+        }
+
+        int len = res_str.length();
+        vector<int> res_vec(len, 0);
+        for (int i = 0; i < len; ++i) {
+            res_vec[i] = (res_str[i] - '0');
+        }
+
+        return res_vec;
+    }
+};
+```
+
+## code_good
+
+https://leetcode.com/problems/add-to-array-form-of-integer/discuss/234488/JavaC%2B%2BPython-Take-K-itself-as-a-Carry  
+
+```
+Runtime: 52 ms, faster than 94.66% of C++ online submissions for Add to Array-Form of Integer.
+Memory Usage: 27.3 MB, less than 95.99% of C++ online submissions for Add to Array-Form of Integer.
+```
+
+```cpp
+class Solution {
+public:
+    vector<int> addToArrayForm(vector<int>& A, int K) {
+        for (int i = A.size() - 1; i >= 0 && K > 0; --i) {
+            A[i] += K;
+            K = A[i] / 10;
+            A[i] %= 10;
+        }
+
+        while (K > 0) {
+            A.insert(A.begin(), K % 10);
+            K /= 10;
+        }
+
+        return A;
+    }
+};
+```
+ 
