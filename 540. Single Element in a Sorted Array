@@ -1,0 +1,83 @@
+
+https://leetcode.com/problems/single-element-in-a-sorted-array/
+
+## code_good
+
+binary search only for even index
+
+https://leetcode-cn.com/problems/single-element-in-a-sorted-array/solution/you-xu-shu-zu-zhong-de-dan-yi-yuan-su-by-leetcode/
+
+```
+Runtime: 12 ms, faster than 93.38% of C++ online submissions for Single Element in a Sorted Array.
+Memory Usage: 11.4 MB, less than 10.69% of C++ online submissions for Single Element in a Sorted Array.
+```
+
+```cpp
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int left = 0;
+        int right = nums.size() - 2;
+        int mid = 0;
+        while (left < right) {
+            mid = left + (right - left) / 2;
+            if (mid % 2 == 1) { --mid; }
+
+            if (nums[mid] == nums[mid + 1]) {
+                left = mid + 2;
+            }
+            else {
+                right = mid;
+            }
+        }
+
+        return nums[left];
+    }
+};
+```
+
+## code_mine
+```
+Runtime: 12 ms, faster than 93.38% of C++ online submissions for Single Element in a Sorted Array.
+Memory Usage: 11.4 MB, less than 10.69% of C++ online submissions for Single Element in a Sorted Array.
+```
+
+```cpp
+class Solution {
+public:
+    int singleNonDuplicate(vector<int>& nums) {
+        int N = nums.size();
+
+        if (0==N) { return -1; }
+        if (1 == N) { return nums[0]; }
+
+        // 0 and N-1
+        if (nums[0] != nums[1]) { return nums[0]; }
+        if (nums[N - 1] != nums[N - 2]) { return nums[N - 1]; }
+
+        int left = 1;
+        int right = N - 2;
+        int mid = 0;
+        while (left <= right) {
+            mid = left + (right - left) / 2;
+
+            if (nums[mid] != nums[mid-1] && nums[mid] != nums[mid+1]) {
+                return nums[mid];
+            }
+
+            if ((mid & 0x1) && (nums[mid] == nums[mid - 1])) {
+                left = mid + 1;
+            }
+            else if((mid & 0x1) == 0 && (nums[mid] == nums[mid + 1])) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
+        }
+
+        return nums[left];
+    }
+};
+```
+
